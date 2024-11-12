@@ -6,7 +6,9 @@ ROS driver to parse NMEA strings and publish standard ROS NavSat message types. 
 
 USAGE
 ---
+
 ros2 launch nmea_navsat_driver nmea_serial_driver.launch.py port:=/dev/ttyUSB0 baud:=9600
+
 
 API
 ---

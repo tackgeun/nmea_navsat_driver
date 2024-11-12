@@ -19,17 +19,21 @@ import sys
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription, LaunchIntrospector, LaunchService
-from launch_ros import actions, get_default_launch_description
-
+from launch_ros import actions
 
 def generate_launch_description():
-    """Generate a launch description for a single serial driver."""
-    config_file = os.path.join(get_package_share_directory("nmea_navsat_driver"), "config", "nmea_serial_driver.yaml")
-    driver_node = actions.Node(
-        package='nmea_navsat_driver', node_executable='nmea_serial_driver', output='screen',
-        parameters=[config_file])
-
-    return LaunchDescription([driver_node])
+    return LaunchDescription([
+        actions.Node(
+            package='nmea_navsat_driver',
+            executable='nmea_serial_driver',
+            name='nmea_serial_driver',
+            output='screen',
+            parameters=[{
+                'port': '/dev/ttyCH341USB0',  
+                'baud': 9600,
+            }],
+        ),
+    ])
 
 
 def main(argv):
@@ -45,7 +49,7 @@ def main(argv):
     print('')
 
     ls = LaunchService()
-    ls.include_launch_description(get_default_launch_description(prefix_output_with_name=False))
+    ls.include_launch_description(get_launch_description(prefix_output_with_name=False))
     ls.include_launch_description(ld)
     return ls.run()
 
